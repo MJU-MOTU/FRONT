@@ -21,5 +21,8 @@ jobs:
       - name: 린트
         run: npm run lint
 
+      - name: 테스트
+        run: npm test
+
       - name: 타입 검사·빌드
         run: npm run build
