@@ -60,3 +60,135 @@ button:disabled {
   color: #c62828;
   font-size: 14px;
 }
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.nav a {
+  color: #333;
+  text-decoration: none;
+}
+
+.nav a.active {
+  font-weight: 700;
+}
+
+.nav .brand {
+  font-weight: 800;
+  margin-right: auto;
+}
+
+button.link {
+  padding: 0;
+  background: none;
+  color: #666;
+  font-size: 14px;
+}
+
+.search {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.search input {
+  flex: 1;
+}
+
+.search button {
+  padding: 10px 16px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  padding: 6px 14px;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+}
+
+.tab.active {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+table.stocks {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.stocks th,
+table.stocks td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+table.stocks td a {
+  color: #111;
+  font-weight: 600;
+  text-decoration: none;
+  margin-right: 8px;
+}
+
+.num {
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.code {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.pager button {
+  padding: 6px 14px;
+  font-size: 14px;
+}
+
+.up {
+  color: #d32f2f;
+}
+
+.down {
+  color: #1565c0;
+}
+
+.quote {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 8px 0 24px;
+}
+
+.quote .price {
+  font-size: 32px;
+}
+
+.chart {
+  width: 100%;
+  height: 320px;
+}
