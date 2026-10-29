@@ -192,3 +192,79 @@ table.stocks td a {
   width: 100%;
   height: 320px;
 }
+
+.order {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 360px;
+  padding: 16px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+}
+
+.order .tabs {
+  margin-bottom: 0;
+}
+
+.tab.active.buy,
+button.buy {
+  background: #d32f2f;
+  border-color: #d32f2f;
+  color: #fff;
+}
+
+.tab.active.sell,
+button.sell {
+  background: #1565c0;
+  border-color: #1565c0;
+  color: #fff;
+}
+
+.order-info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 12px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.order-info dt {
+  color: #666;
+}
+
+.order-info dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.success {
+  color: #2e7d32;
+  font-size: 14px;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.summary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+}
+
+.summary strong {
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+tr.rejected td {
+  color: #999;
+}

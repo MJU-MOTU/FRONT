@@ -1,25 +1,30 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { ApiError } from '../api/ApiError.ts'
 import { useApiQuery } from '../api/useApiQuery.ts'
 import { changeClass, formatDateTime, formatPrice, formatRate, formatSigned } from '../market/format.ts'
 import { stockApi } from '../market/stockApi.ts'
+import { OrderForm } from '../trading/OrderForm.tsx'
 
 // 차트 라이브러리는 크기가 커서 상세 화면에 들어올 때만 내려받는다
 const CandleChart = lazy(() => import('../components/CandleChart.tsx').then((m) => ({ default: m.CandleChart })))
 
 export function StockDetailPage() {
   const { code = '' } = useParams()
-  const detail = useApiQuery(() => stockApi.detail(code), [code])
+  const [version, setVersion] = useState(0)
+  // 주문이 체결되면 현재가를 다시 불러온다
+  const detail = useApiQuery(() => stockApi.detail(code), [code, version], { keepPrevious: true })
   const candles = useApiQuery(() => stockApi.candles(code), [code])
 
-  if (detail.loading) return <p className="muted">불러오는 중…</p>
+  // 이전 데이터는 같은 종목일 때만 쓴다. 다른 종목으로 옮겨 가는 중이면 이전 종목 가격을 보여 주지 않는다
+  const current = detail.data?.code === code ? detail.data : undefined
+  if (detail.loading && !current) return <p className="muted">불러오는 중…</p>
   if (detail.error instanceof ApiError && detail.error.code === 'STOCK_NOT_FOUND') {
     return <p className="error" role="alert">없는 종목입니다. <Link to="/stocks">종목 목록으로</Link></p>
   }
-  if (!detail.data) return <p className="error" role="alert">종목을 불러오지 못했습니다</p>
+  if (!current) return <p className="error" role="alert">종목을 불러오지 못했습니다</p>
 
-  const { name, market, quote } = detail.data
+  const { name, market, quote } = current
 
   return (
     <section>
@@ -39,6 +44,9 @@ export function StockDetailPage() {
       ) : (
         <p className="muted" role="status">지금은 시세를 가져올 수 없습니다</p>
       )}
+
+      <h2>주문</h2>
+      <OrderForm stockCode={code} price={quote?.price ?? null} onFilled={() => setVersion((v) => v + 1)} />
 
       <h2>일봉 (최근 3개월)</h2>
       {candles.loading && <p className="muted">차트를 불러오는 중…</p>}
