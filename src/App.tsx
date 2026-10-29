@@ -4,6 +4,8 @@ import { RequireAuth } from './auth/RequireAuth.tsx'
 import { NavBar } from './components/NavBar.tsx'
 import { HomePage } from './pages/HomePage.tsx'
 import { LoginPage } from './pages/LoginPage.tsx'
+import { OrdersPage } from './pages/OrdersPage.tsx'
+import { PortfolioPage } from './pages/PortfolioPage.tsx'
 import { SignupPage } from './pages/SignupPage.tsx'
 import { StockDetailPage } from './pages/StockDetailPage.tsx'
 import { StocksPage } from './pages/StocksPage.tsx'
@@ -18,6 +20,8 @@ function App() {
             <Route path="/" element={<RequireAuth><HomePage /></RequireAuth>} />
             <Route path="/stocks" element={<RequireAuth><StocksPage /></RequireAuth>} />
             <Route path="/stocks/:code" element={<RequireAuth><StockDetailPage /></RequireAuth>} />
+            <Route path="/portfolio" element={<RequireAuth><PortfolioPage /></RequireAuth>} />
+            <Route path="/orders" element={<RequireAuth><OrdersPage /></RequireAuth>} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />

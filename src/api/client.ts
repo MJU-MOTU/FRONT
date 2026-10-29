@@ -16,7 +16,7 @@ type ClientOptions = {
   onAuthFailure?: () => void
 }
 
-type RequestOptions = { auth?: boolean }
+type RequestOptions = { auth?: boolean; headers?: Record<string, string> }
 
 export function createApiClient({ baseUrl = '', fetch: fetchFn = fetch, tokens, onAuthFailure }: ClientOptions) {
   let refreshing: Promise<boolean> | null = null
@@ -48,8 +48,9 @@ export function createApiClient({ baseUrl = '', fetch: fetchFn = fetch, tokens, 
     return refreshing
   }
 
-  async function request<T>(method: string, path: string, body: unknown, { auth = true }: RequestOptions, retried = false): Promise<T> {
-    const headers: Record<string, string> = {}
+  async function request<T>(method: string, path: string, body: unknown, options: RequestOptions, retried = false): Promise<T> {
+    const { auth = true } = options
+    const headers: Record<string, string> = { ...options.headers }
     if (body !== undefined) {
       headers['Content-Type'] = 'application/json'
     }
@@ -66,7 +67,7 @@ export function createApiClient({ baseUrl = '', fetch: fetchFn = fetch, tokens, 
 
     if (response.status === 401 && auth && !retried) {
       if (await refreshOnce()) {
-        return request<T>(method, path, body, { auth }, true)
+        return request<T>(method, path, body, options, true)
       }
       onAuthFailure?.()
     }
