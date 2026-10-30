@@ -26,6 +26,28 @@ npm run dev
 | --- | --- |
 | `VITE_API_BASE_URL` | 배포한 백엔드 주소. 개발 중에는 비워 두면 Vite 프록시를 씁니다 |
 
+## 배포
+
+[Cloudflare Workers 정적 자산](https://developers.cloudflare.com/workers/static-assets/)으로 올립니다. Worker 스크립트 없이 `dist`만 올리고, 설정은 `wrangler.jsonc` 하나입니다. 플랫폼을 고른 이유와 백엔드 배포 순서는 [BACK의 docs/deploy.md](https://github.com/MJU-MOTU/BACK/blob/main/docs/deploy.md)에 있습니다.
+
+| 설정 | 값 |
+| --- | --- |
+| 빌드 명령 | `npm run build` |
+| 배포 명령 | `npx wrangler deploy` (기본값) |
+| Settings → Build → Build variables and secrets | `VITE_API_BASE_URL=https://<백엔드 주소>` |
+
+- `VITE_API_BASE_URL`은 빌드할 때 코드에 들어갑니다. 값을 바꾸면 다시 배포해야 합니다.
+- 배포된 주소(`https://...workers.dev` 또는 연결한 도메인)를 백엔드 `CORS_ALLOWED_ORIGINS`에 넣어야 브라우저 요청이 통과합니다.
+- 파일이 없는 경로(`/stocks/005930` 등)는 `index.html`을 200으로 돌려줘 클라이언트 라우팅이 처리합니다(`not_found_handling: single-page-application`).
+- 새로 배포하면 이전 빌드의 청크 파일이 사라집니다. 열어 둔 탭이 차트(지연 로딩)를 불러오다 실패하면 한 번 새로고침해 새 빌드를 받습니다(`src/main.tsx`). 이 처리가 없으면 화면 전체가 비었습니다.
+
+배포 결과를 로컬에서 확인하려면 백엔드 `CORS_ALLOWED_ORIGINS`에 `http://localhost:8787`을 넣고 띄운 뒤 아래를 실행합니다.
+
+```bash
+VITE_API_BASE_URL=http://localhost:8080 npm run build
+npx wrangler dev
+```
+
 ## 화면
 
 | 경로 | 내용 |

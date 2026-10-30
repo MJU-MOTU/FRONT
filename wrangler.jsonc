@@ -1,0 +1,11 @@
+// Cloudflare Workers 정적 자산 배포 설정 (Worker 스크립트 없이 dist만 올린다)
+// 배포 방법과 환경 변수는 README의 "배포" 참고
+{
+  "name": "motu-front",
+  "compatibility_date": "2026-10-30",
+  "assets": {
+    "directory": "./dist/",
+    // 파일이 없는 경로(/stocks/005930 등)는 index.html을 200으로 돌려줘 클라이언트 라우팅이 처리한다
+    "not_found_handling": "single-page-application"
+  }
+}
