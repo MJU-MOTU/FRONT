@@ -100,3 +100,19 @@ describe('createApiClient', () => {
     })
   })
 })
+
+describe('baseUrl', () => {
+  it('끝에 붙은 /를 떼고 경로를 잇는다', async () => {
+    const fetch = vi.fn<typeof globalThis.fetch>(async () => json(200, { id: 1 }))
+    const client = createApiClient({
+      baseUrl: 'https://abc.lambda-url.ap-northeast-2.on.aws/',
+      fetch,
+      tokens: memoryTokens({ accessToken: 'a' }),
+      onAuthFailure: () => {},
+    })
+
+    await client.get('/api/v1/me')
+
+    expect(String(fetch.mock.calls[0][0])).toBe('https://abc.lambda-url.ap-northeast-2.on.aws/api/v1/me')
+  })
+})
