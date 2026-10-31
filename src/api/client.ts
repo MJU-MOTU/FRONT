@@ -18,7 +18,9 @@ type ClientOptions = {
 
 type RequestOptions = { auth?: boolean; headers?: Record<string, string> }
 
-export function createApiClient({ baseUrl = '', fetch: fetchFn = fetch, tokens, onAuthFailure }: ClientOptions) {
+export function createApiClient({ baseUrl: rawBaseUrl = '', fetch: fetchFn = fetch, tokens, onAuthFailure }: ClientOptions) {
+  // Lambda Function URL은 끝에 /가 붙어 나온다. 그대로 이으면 //api/...가 되어 서버가 거절한다
+  const baseUrl = rawBaseUrl.replace(/\/+$/, '')
   let refreshing: Promise<boolean> | null = null
 
   async function refresh(): Promise<boolean> {
